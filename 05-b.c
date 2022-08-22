@@ -3,39 +3,40 @@
 #include <stdio.h>
 #include <math.h>
 
-float square_root(int n)
+double square_root(int n)
 {
     if (n < 0)
     {
         return -1;
     }
-    float result;
+    double root;
     for (int i = 0; i < n; i++)
     {
         if (i * i == n)
         {
-            result = i;
+            root = i;
             break;
         }
         else if (i * i > n)
         {
-            result = i - 1;
+            root = i - 1;
             break;
         }
     }
 
-    for (float i = 0; i < 1; i += 0.00000000001)
+    int precision = 8;
+    double incr = 0.1;
+    for (int i = 0; i < precision; i++)
     {
-        result += i;
-        if (result * result == n)
+        while (root * root < n)
         {
-            return result;
+            root += incr;
         }
-        else if (result * result > n)
-        {
-            return result - i;
-        }
+        root -= incr;
+        incr /= 10;
     }
+
+    return root;
 }
 
 int main(void)
@@ -43,13 +44,13 @@ int main(void)
     int n;
     printf("Number: ");
     scanf("%i", &n);
-    float sq_root = square_root(n);
+    double sq_root = square_root(n);
     if (sq_root < 0)
     {
         printf("Error negative number...\n");
         return 1;
     }
 
-    printf("Square Root: %f\n", sq_root);
+    printf("Square Root: %.8lf\n", sq_root);
     return 0;
 }
